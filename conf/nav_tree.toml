@@ -1,0 +1,38 @@
+id = "root"
+
+# admin view nav
+[[children]]
+id = "resource.admin.list"
+text = "ResourceManage"
+allowed_roles = ["admin"]
+children = [
+    { id = "AIGatewayCluster.list", text = "AIGatewayClusterManage", allowed_roles = ["admin"] },
+    { id = "AIGatewayInstancePool.list", text = "AIGatewayInstancePoolManage", allowed_roles = ["admin"] },
+    { id = "Domain.list", text = "DomainManage", allowed_roles = ["admin"] },
+    { id = "AIPool.list", text = "AIPoolManage", allowed_roles = ["admin"] },
+    { id = "AICluster.list", text = "AIClusterManage", allowed_roles = ["admin"] },
+    { id = "gslb.list", text = "SubClusterLB", allowed_roles = ["admin"] },
+    { id = "cert.list", text = "CertificateManage", allowed_roles = ["admin"] }
+]
+
+[[children]]
+id = "route.admin.list"
+text = "RouteManage"
+allowed_roles = ["admin"]
+children = [
+    { id = "DefaultRouteRule.list", text = "DefaultRouteRuleManage", allowed_roles = ["admin"] },
+    { id = "AdvanceRouteRule.list", text = "AdvanceRouteRuleManage", allowed_roles = ["admin"] }
+]
+
+[[children]]
+id = "consumer.admin.list"
+text = "ConsumerManage"
+allowed_roles = ["admin"]
+children = [
+    { id = "APIKey.list", text = "APIKeyManage", allowed_roles = ["admin"] }
+]
+
+[[children]]
+id = "user.list"
+text = "UserManage"
+allowed_roles = ["admin"]

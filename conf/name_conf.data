@@ -1,0 +1,17 @@
+{
+    "Version": "init version",
+    "Config": {
+        "BFE.poc-redis-wx": [{
+                "Host": "172.18.1.196",
+                "Port":  6379,
+                "Weight": 10
+        }],
+        "example.redis.cluster": [
+            {
+                "Host": "192.168.1.1",
+                "Port": 6439,
+                "Weight": 10
+            }
+        ]
+    }
+}
