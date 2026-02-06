@@ -326,5 +326,6 @@ UNIQUE INDEX `product_id` (`product_id`)
 -- insert default user
 insert into users (id, name, password, scopes, created_at) values(1, 'admin', 'admin', 'System', now());
 
+insert into products (id, name, `description`, mail_list,contact_person, created_at) values(1, 'BFE', 'Build-in Product, User by System Manager', 'bfe@cncf.com', 'bfe',          now());
 -- insert default AI product name
 insert into products (name, description,mail_list,contact_person, created_at) values ('AI_product', 'ai 产品线', '', '',now());
