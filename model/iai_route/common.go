@@ -30,6 +30,7 @@ type Rule struct {
 	Name         string              `json:"name"`
 	Basic        *BasicInfo          `json:"basic"`
 	ConditionVar condition.Condition `json:"-" uri:"-"`
+	ProductName  string              `json:"-"`
 }
 
 // BasicInfo

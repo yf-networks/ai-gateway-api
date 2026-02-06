@@ -88,8 +88,9 @@ func ConvertToTAIRouteRule(rule *iai_route.Rule) *dao.TAIRouteRuleParam {
 	}
 
 	dbRule := &dao.TAIRouteRuleParam{
-		Name:  &rule.Name,
-		Basic: lib.PString(""),
+		Name:        &rule.Name,
+		Basic:       lib.PString(""),
+		ProductName: &rule.ProductName,
 	}
 
 	// 转换Basic

@@ -40,24 +40,31 @@ var UpdateRoute = &xreq.Endpoint{
 }
 
 // newReqParam parses and validates the update request parameters
-func newReqParam(req *http.Request) (*UpdateRulesRequest, error) {
+func newReqParam(req *http.Request) (*UpdateRulesRequest, *ibasic.Product, error) {
 	param := &UpdateRulesRequest{}
 	if err := xreq.BindJSON(req, param); err != nil {
-		return nil, err
+		return nil, nil, err
+	}
+
+	product, err := ibasic.MustGetProduct(req.Context())
+	if err != nil {
+		return nil, nil, err
 	}
 
 	// Validate all rules
 	for i, rule := range param.Rules {
 		if err := iai_route.ValidateRule(rule, i); err != nil {
-			return nil, xerror.WrapParamError(err)
+			return nil, nil, xerror.WrapParamError(err)
 		}
+
+		param.Rules[i].ProductName = product.Name
 	}
 
-	return param, nil
+	return param, product, nil
 }
 
 // updateProcess handles the business logic for updating AI route rules
-func updateProcess(req *http.Request, param *UpdateRulesRequest) (interface{}, error) {
+func updateProcess(req *http.Request, param *UpdateRulesRequest, product *ibasic.Product) (interface{}, error) {
 	// Fetch default route rules for validation
 	defaultRules, err := container.RouteRuleManager.FetchDefaultRouteRules(req.Context(), nil)
 	if err != nil {
@@ -66,11 +73,6 @@ func updateProcess(req *http.Request, param *UpdateRulesRequest) (interface{}, e
 
 	if len(defaultRules) == 0 {
 		return nil, xerror.WrapParamErrorWithMsg("Must set default route rule")
-	}
-
-	product, err := ibasic.MustGetProduct(req.Context())
-	if err != nil {
-		return nil, err
 	}
 
 	// Fetch the internal AI route product
@@ -152,10 +154,10 @@ var _ xreq.Handler = UpdateAction
 
 // UpdateAction is the main handler for updating AI route rules
 func UpdateAction(req *http.Request) (interface{}, error) {
-	param, err := newReqParam(req)
+	param, product, err := newReqParam(req)
 	if err != nil {
 		return nil, err
 	}
 
-	return updateProcess(req, param)
+	return updateProcess(req, param, product)
 }
