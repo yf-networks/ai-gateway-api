@@ -10,6 +10,7 @@ children = [
     { id = "AIGatewayInstancePool.list", text = "AIGatewayInstancePoolManage", allowed_roles = ["admin"] },
     { id = "Domain.list", text = "DomainManage", allowed_roles = ["admin"] },
     { id = "AIPool.list", text = "AIPoolManage", allowed_roles = ["admin"] },
+    { id = "SubCluster.list", text = "SubClusterManage", allowed_roles = ["admin"] },
     { id = "AICluster.list", text = "AIClusterManage", allowed_roles = ["admin"] },
     { id = "gslb.list", text = "SubClusterLB", allowed_roles = ["admin"] },
     { id = "cert.list", text = "CertificateManage", allowed_roles = ["admin"] }
