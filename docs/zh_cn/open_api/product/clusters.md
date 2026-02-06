@@ -315,3 +315,104 @@
 	"ready": false
 }
 ```
+
+## 8 获取AI模型提供商列表
+
+### 基本信息
+| 项目  | 值  | 说明 |
+| - | - | - |
+| 含义	| 执行接口调用 | |
+| 端点 | /products/{product_name}/model-providers| |
+| 版本 | v1 |  |
+| method | GET | - |
+| Content-Type | application/x-www-form-urlencoded | - |
+
+### 输入参数
+
+#### Body 参数
+无
+
+#### 请求示例
+curl -X GET 'http://api-server:port/open-api/v1/products/test/model-providers' -H 'Authorization:Token token_string'
+
+### 返回数据(Data内容)
+状态码200为成功。
+
+#### 成功返回参数示例
+```json
+{
+    "ErrNum": 200,
+    "ErrMsg": "success",
+    "Data": [
+        "deepseek",
+		"qwen",
+		"openai"
+    ],
+    "Version": "",
+    "Sign": "",
+    "WorkMode": "ModeNormal"
+}
+```
+
+#### 错误返回
+无。
+
+## 9 获取AI模型列表
+
+### 基本信息
+| 项目  | 值  | 说明 |
+| - | - | - |
+| 含义	| 执行接口调用 | |
+| 端点 | /products/{product_name}/models| |
+| 版本 | v1 |  |
+| method | POST | - |
+| Content-Type | application/json | - |
+
+### 输入参数
+
+#### Body 参数
+| 参数名 | 类型 |参数含义 | 必填 | 补充描述 |
+| - | -  | - | - | - | 
+| schema | string | http、https | Y |  |
+| uri | string | 请求的uri | N | 路径前面可以有/，也可以无/。例如：/models或者models。 |
+| hosts | []string | 请求的ip、port组合或者域名。 | Y | 支持ipv4、ipv6。ipv4："1.1.1.1:8080" ipv6:"[2001:db8::1]:8080"|
+| headers | map[string]string | 请求的header参数列表 | N | - |
+| provider_type | string | AI模型提供商类型 | N | 取值为：deepseek，openai，qwen。 |
+
+#### 请求示例
+curl -X POST 'http://api-server:port/open-api/v1/products/test/models' -H 'Authorization:Token token_string' -d "@data.json" -H 'Content-Type:application/json'
+
+data.json示例：
+```json
+{
+    "schema":"http",
+    "uri":"/models",
+    "hosts":["1.1.1.1:8080", "[2001:db8::1]:8080","www.a.com","www.b.com:8080"],
+    "headers":{
+        "Content-type":"application/json"
+    },
+	"provider_type":"deepseek"
+}
+```
+
+### 返回数据(Data内容)
+状态码200为成功。返回数据为列表结构。
+
+| 参数名 | 类型 |参数含义 | 必填 | 补充描述 |
+| - | -  | - | - | - | 
+| id | string |  | Y |  |
+| name | string | 名称 | N | -|
+
+#### 成功返回参数示例
+```json
+[{
+    "id": "model1",
+    "name": "Model 1"
+}]
+```
+
+#### 错误返回
+| **错误码** | 错误信息 |
+| ---------------------- | -------- |
+| 422 | 参数不合法|
+| 513 | 调用AI模型提供商API出错|

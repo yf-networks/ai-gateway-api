@@ -35,12 +35,16 @@ func validatePathFilter(pathFilter *PathFilter, ruleName string) error {
 		MatchModeSuffix: true,
 	}
 
-	if pathFilter.MatchMode != nil && *pathFilter.MatchMode != "" && !validMatchModes[*pathFilter.MatchMode] {
+	if pathFilter.IgnoreCase == nil {
+		return fmt.Errorf("Must set path_filter.ignore_case for rule [%s]", ruleName)
+	}
+
+	if pathFilter.MatchMode == nil || (*pathFilter.MatchMode != "" && !validMatchModes[*pathFilter.MatchMode]) {
 		return fmt.Errorf("Invalid path_filter.match_mode value for rule [%s]: %s", ruleName, *pathFilter.MatchMode)
 	}
 
 	// Validate path length
-	if pathFilter.Path != nil && len(*pathFilter.Path) > 2048 {
+	if pathFilter.Path == nil || len(*pathFilter.Path) > 2048 {
 		return fmt.Errorf("Path length for rule [%s] exceeds 2048 characters limit", ruleName)
 	}
 

@@ -1,0 +1,14 @@
+[
+  {
+    "name":"OpenAI",
+    "id": "openai"
+  },
+  {
+    "name":"DeepSeek",
+    "id": "deepseek"
+  },
+  {
+    "name":"千问",
+    "id": "qwen"
+  }
+]
