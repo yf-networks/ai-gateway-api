@@ -1,3 +1,4 @@
+# Copyright(c) 2024 Beijing Yingfei Networks Technology Co.Ltd. All rights reserved.
 # Copyright (c) 2019 The BFE Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +16,30 @@
 # init project path
 HOMEDIR := $(shell pwd)
 OUTDIR  := $(HOMEDIR)/output
+
+
+# -----------------------------------------------------------------------------
+# Container image build variables (used by docker/docker-push targets)
+# -----------------------------------------------------------------------------
+
+# Image name and version
+BFE_IMAGE_NAME ?= ai-gateway-api
+BFE_VERSION ?= $(shell sed -nE 's/^const Version = "([^"]+)"/\1/p' version/version.go)
+VERSION_TAG := v$(BFE_VERSION)
+
+# Registry and build settings
+REGISTRY ?=
+PLATFORMS ?= linux/amd64,linux/arm64
+BUILDER_NAME ?= ai-gateway-api-builder
+NO_CACHE ?= false
+DOCKER_BUILD_ARGS ?=
+
+# Derived tags
+IMAGE_LOCAL := $(BFE_IMAGE_NAME):$(VERSION_TAG)
+IMAGE_LATEST_LOCAL := $(BFE_IMAGE_NAME):latest
+IMAGE_REMOTE := $(if $(REGISTRY),$(REGISTRY)/$(BFE_IMAGE_NAME):$(VERSION_TAG),)
+IMAGE_LATEST_REMOTE := $(if $(REGISTRY),$(REGISTRY)/$(BFE_IMAGE_NAME):latest,)
+# -----------------------------------------------------------------------------
 
 # init command params
 GO      := $(GO_1_16_BIN)go
@@ -60,6 +85,27 @@ package-bin:
 	cp -rf  db_ddl.sql 	$(OUTDIR)/
 	cp -rf  *.md 		$(OUTDIR)/
 	mv ai-gateway-api  		$(OUTDIR)/
+
+
+# make docker
+docker:
+	docker build $(if $(filter 1 true TRUE True,$(NO_CACHE)),--no-cache,) $(DOCKER_BUILD_ARGS) \
+		-t $(IMAGE_LOCAL) \
+		-t $(IMAGE_LATEST_LOCAL) \
+		.
+
+# make docker-push (multi-arch)
+docker-push:
+	@test -n "$(REGISTRY)" || (echo "REGISTRY is required, e.g. REGISTRY=ghcr.io/your-org" && exit 1)
+	@docker buildx inspect $(BUILDER_NAME) >/dev/null 2>&1 || docker buildx create --name $(BUILDER_NAME) --driver docker-container --use
+	@docker buildx use $(BUILDER_NAME)
+	@docker buildx inspect --bootstrap >/dev/null
+	docker buildx build $(if $(filter 1 true TRUE True,$(NO_CACHE)),--no-cache,) $(DOCKER_BUILD_ARGS) \
+		--platform $(PLATFORMS) \
+		--push \
+		-t $(IMAGE_REMOTE) \
+		-t $(IMAGE_LATEST_REMOTE) \
+		.
 
 # make license-eye-install
 license-eye-install:
