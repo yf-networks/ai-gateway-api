@@ -31,9 +31,9 @@ type ModelProvider struct {
 }
 
 func listModelProvidersProcess(ctx context.Context) (interface{}, error) {
-	data, err := os.ReadFile("../conf/ai/models.json")
+	data, err := os.ReadFile("conf/ai/models.json")
 	if err != nil {
-		return nil, xerror.WrapParamError(fmt.Errorf("failed to read config ../conf/ai/models.json: %w", err))
+		return nil, xerror.WrapParamError(fmt.Errorf("failed to read config conf/ai/models.json: %w", err))
 	}
 
 	var models []ModelProvider

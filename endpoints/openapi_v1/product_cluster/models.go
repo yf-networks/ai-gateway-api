@@ -50,7 +50,7 @@ func ListModelsAction(req *http.Request) (interface{}, error) {
 }
 
 func listModelsProcess(ctx context.Context, param *RequestParams) (interface{}, error) {
-	parserConf, err := LoadParserConfig("../conf/ai/model_definition.json")
+	parserConf, err := LoadParserConfig("conf/ai/model_definition.json")
 	if err != nil {
 		return nil, xerror.WrapParamError(err)
 	}
