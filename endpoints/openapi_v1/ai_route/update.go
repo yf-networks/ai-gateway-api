@@ -75,17 +75,6 @@ func updateProcess(req *http.Request, param *UpdateRulesRequest, product *ibasic
 		return nil, xerror.WrapParamErrorWithMsg("Must set default route rule")
 	}
 
-	// Fetch the internal AI route product
-	products, err := container.ProductManager.FetchProducts(req.Context(), &ibasic.ProductFilter{
-		Name: &product.Name,
-	})
-	if err != nil {
-		return nil, err
-	}
-	if len(products) == 0 {
-		return nil, xerror.WrapRecordNotExist(product.Name)
-	}
-
 	// Build route rules parameter
 	routeRules := ProductRouteRuleParam{
 		AdvanceRouteRules: buildAdvanceRouteRules(req.Context(), param.Rules),
@@ -111,7 +100,7 @@ func updateProcess(req *http.Request, param *UpdateRulesRequest, product *ibasic
 	// Create or update AI route rules
 	err = container.AIRouteRuleManager.CreateAIRouteRule(req.Context(),
 		param.Rules,
-		products[0],
+		product,
 		advanceRules)
 	if err != nil {
 		return nil, err

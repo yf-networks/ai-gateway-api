@@ -7,7 +7,7 @@ toolchain go1.22.8
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/baidu/go-lib v0.0.0-20210316014414-55daa983069e
-	github.com/bfenetworks/bfe v1.8.0
+	github.com/bfenetworks/bfe v1.8.1-0.20260210095534-487a2c764397
 	github.com/codegangsta/negroni v1.0.0
 	github.com/didi/gendry v1.7.0
 	github.com/go-playground/locales v0.14.0
@@ -54,5 +54,3 @@ require (
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
-
-// replace github.com/bfenetworks/bfe => /home/liuqing/Workspace/src/github.com/bfenetworks/bfe

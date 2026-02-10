@@ -26,6 +26,7 @@
 | basic.buffers| object |  缓冲设置| Y |  | 
 | basic.buffers.req_write_buffer_size| string |  接受请求的缓冲字节数| Y |  | 
 | basic.timeouts| object |  超时设置| Y |  内容见 [表：超时设置](#timeouts) | 
+| basic.protocol| string |  集群支持的协议| Y |  取值为http、https。 | 
 | sticky_sessions| object |  会话保持| Y | 内容见 [表：会话保持](#sticky_sessions)| 
 | sub_clusters| []string |  集群中挂载的子集群| Y |  | 
 | scheduler| object |  内网流量配置| Y | 具体说明见 [调度说明](traffic.md#scheduler_explain)  | 
@@ -80,6 +81,7 @@
     "name": "news_static",
     "description": "新闻静态页面集群",
     "basic": {
+		"protocol": "http",
         "connection": {
             "max_idle_conn_per_rs": 0,
             "cancel_on_client_close": false
@@ -187,6 +189,7 @@
 	"description": "新闻静态页面集群", 
 	"ready": false,
 	"basic": {
+		"protocol": "http",
 		"connection": {
 	 		"max_idle_conn_per_rs": 0,
 			"cancel_on_client_close": false

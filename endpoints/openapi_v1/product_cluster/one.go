@@ -55,6 +55,7 @@ type Basic struct {
 	Retries    *Retries    `json:"retries" uri:"retries"`
 	Buffers    *Buffers    `json:"buffers" uri:"buffers"`
 	Timeouts   *Timeouts   `json:"timeouts" uri:"timeouts"`
+	Protocol   *string     `json:"protocol"`
 }
 
 // Connection Request Param
@@ -150,6 +151,7 @@ func clusterModel2Control(cluster *icluster_conf.Cluster) *ClusterData {
 				TimeoutReadClientAgain: cluster.Basic.Timeouts.TimeoutReadClientAgain,
 				TimeoutWriteClient:     cluster.Basic.Timeouts.TimeoutWriteClient,
 			},
+			Protocol: cluster.Basic.Protocol,
 		},
 		StickySessions: &StickySessions{
 			SessionStickyType: map[bool]string{

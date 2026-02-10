@@ -31,6 +31,7 @@ package product_cluster
 import (
 	"net/http"
 
+	"github.com/yf-networks/ai-gateway-api/lib"
 	"github.com/yf-networks/ai-gateway-api/lib/xerror"
 	"github.com/yf-networks/ai-gateway-api/lib/xreq"
 	"github.com/yf-networks/ai-gateway-api/model/iauth"
@@ -71,6 +72,17 @@ func newUpdateParam4Update(req *http.Request) (*UpsertParam, error) {
 
 	if err := checkLLMConfig(param.LLMConfig); err != nil {
 		return nil, err
+	}
+
+	if param.Basic.Protocol == nil {
+		return nil, xerror.WrapParamErrorWithMsg("Basic.Protocol Want Be Set")
+	}
+
+	switch *param.Basic.Protocol {
+	case "http":
+	case "https":
+	default:
+		param.Basic.Protocol = lib.PString("http")
 	}
 
 	return param, nil

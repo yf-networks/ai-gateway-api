@@ -29,6 +29,7 @@ type TCluster struct {
 	ID                     int64     `db:"id"`
 	Name                   string    `db:"name"`
 	Description            string    `db:"description"`
+	Protocol               string    `db:"protocol"`
 	ProductID              int64     `db:"product_id"`
 	MaxIdleConnPerHost     int16     `db:"max_idle_conn_per_host"`
 	TimeoutConnServ        int32     `db:"timeout_conn_serv"`
@@ -97,6 +98,7 @@ type TClusterParam struct {
 	Name                   *string    `db:"name"`
 	Names                  []string   `db:"name,in"`
 	Description            *string    `db:"description"`
+	Protocol               *string    `db:"protocol"`
 	ProductID              *int64     `db:"product_id"`
 	MaxIdleConnPerHost     *int16     `db:"max_idle_conn_per_host"`
 	TimeoutConnServ        *int32     `db:"timeout_conn_serv"`

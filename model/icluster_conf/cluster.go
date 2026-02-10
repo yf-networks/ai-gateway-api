@@ -30,6 +30,7 @@ package icluster_conf
 
 import (
 	"context"
+	"net"
 
 	"github.com/bfenetworks/bfe/bfe_config/bfe_cluster_conf/cluster_conf"
 	"github.com/bfenetworks/bfe/bfe_config/bfe_route_conf/route_rule_conf"
@@ -90,6 +91,7 @@ type ClusterBasicParam struct {
 	Retries    *ClusterBasicRetriesParam
 	Buffers    *ClusterBasicBuffersParam
 	Timeouts   *ClusterBasicTimeoutsParam
+	Protocol   *string
 }
 
 type ClusterStickySessionsParam struct {
@@ -168,6 +170,7 @@ type ClusterBasic struct {
 	Retries    *ClusterBasicRetries
 	Buffers    *ClusterBasicBuffers
 	Timeouts   *ClusterBasicTimeouts
+	Protocol   *string
 }
 
 type ClusterStickySessions struct {
@@ -184,6 +187,7 @@ type LLMConfig struct {
 	Models        []string   `json:"models"`         // model name list
 	ModelMappings []*Mapping `json:"model_mappings"` // model mapping
 	Key           *string    `json:"key"`            // service auth key
+	ProviderType  *string    `json:"provider_type"`
 }
 
 type Mapping struct {
@@ -643,7 +647,7 @@ func NewBfeClusterConf(version string, clusters []*Cluster) *cluster_conf.BfeClu
 
 		clusterConf := cluster_conf.ClusterConf{
 			BackendConf: &cluster_conf.BackendBasic{
-				Protocol:              lib.PString("http"),
+				Protocol:              cluster.Basic.Protocol,
 				TimeoutConnSrv:        int322intp(cluster.Basic.Timeouts.TimeoutConnServ),
 				TimeoutResponseHeader: int322intp(cluster.Basic.Timeouts.TimeoutResponseHeader),
 				MaxIdleConnsPerHost:   int162intp(cluster.Basic.Connection.MaxIdleConnPerRs),
@@ -670,6 +674,21 @@ func NewBfeClusterConf(version string, clusters []*Cluster) *cluster_conf.BfeClu
 			},
 		}
 
+		if cluster.Basic.Protocol != nil && *cluster.Basic.Protocol == "https" {
+			clusterConf.HTTPSConf = &cluster_conf.BackendHTTPS{
+				RSHost:               lib.PString(""),
+				RSInsecureSkipVerify: lib.PBool(true),
+				RSCAList:             nil,
+				BFECertFile:          nil,
+				BFEKeyFile:           nil,
+			}
+		}
+
+		if isDomainPool(cluster.SubClusters) {
+			clusterConf.ClusterBasic.DisableHealthCheck = lib.PBool(true)
+			clusterConf.ClusterBasic.DisableHostHeader = lib.PBool(true)
+		}
+
 		if cluster.LLMConfig != nil {
 			clusterConf.AIConf = &cluster_conf.AIConf{
 				Type:         0,
@@ -693,4 +712,19 @@ func convertToBFEModelMapping(modelMappings []*Mapping) *map[string]string {
 	}
 
 	return &responseMap
+}
+
+func isDomainPool(subClusters []*SubCluster) bool {
+	for _, subCluster := range subClusters {
+		if subCluster.InstancePool != nil {
+			for _, instance := range subCluster.InstancePool.Instances {
+				ip := net.ParseIP(instance.IP)
+				if ip == nil {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
 }

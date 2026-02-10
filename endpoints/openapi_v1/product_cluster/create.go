@@ -105,6 +105,7 @@ type BasicParam struct {
 	Retries    *RetriesParam    `json:"retries" validate:"required"`
 	Buffers    *BuffersParam    `json:"buffers" validate:"required"`
 	Timeouts   *TimeoutsParam   `json:"timeouts" validate:"required"`
+	Protocol   *string          `json:"protocol"`
 }
 
 // RetriesParam Request Param
@@ -170,6 +171,17 @@ func newCreateParam4Create(req *http.Request) (*UpsertParam, error) {
 		return nil, err
 	}
 
+	if param.Basic.Protocol == nil {
+		return nil, xerror.WrapParamErrorWithMsg("Basic.Protocol Want Be Set")
+	}
+
+	switch *param.Basic.Protocol {
+	case "http":
+	case "https":
+	default:
+		param.Basic.Protocol = lib.PString("http")
+	}
+
 	return param, err
 }
 
@@ -189,7 +201,10 @@ func clusterParamControlModel(param *UpsertParam) *icluster_conf.ClusterParam {
 	}
 
 	if basic := param.Basic; basic != nil {
-		rst.Basic = &icluster_conf.ClusterBasicParam{}
+		rst.Basic = &icluster_conf.ClusterBasicParam{
+			Protocol: basic.Protocol,
+		}
+
 		if conn := basic.Connection; conn != nil {
 			rst.Basic.Connection = &icluster_conf.ClusterBasicConnectionParam{
 				MaxIdleConnPerRs:    conn.MaxIdleConnPerRs,

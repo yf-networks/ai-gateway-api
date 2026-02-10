@@ -101,9 +101,6 @@ func (rlm *APIKeyRuleManager) FormatAIRouteAPIKeyRules(ctx context.Context, prod
 	if err != nil {
 		return nil, err
 	}
-	if len(aiRouteRules) == 0 {
-		return nil, nil
-	}
 
 	var ruleResult []*APIKeyRule
 	for _, rule := range aiRouteRules {
@@ -119,6 +116,17 @@ func (rlm *APIKeyRuleManager) FormatAIRouteAPIKeyRules(ctx context.Context, prod
 			ProductName: stateful.DefaultConfig.RunTime.AIRouteInnerProductName,
 		})
 	}
+
+	ruleResult = append(ruleResult, &APIKeyRule{
+		Cond: "default_t()",
+		Actions: []Action{
+			{
+				Cmd: APIKeyActionCMD,
+			},
+		},
+		ProductName: stateful.DefaultConfig.RunTime.AIRouteInnerProductName,
+	})
+
 	return ruleResult, nil
 }
 

@@ -263,6 +263,7 @@ func newCluster(dc *dao.TCluster, subClusters []*icluster_conf.SubCluster, capac
 				TimeoutReadClientAgain: dc.TimeoutReadClientAgain,
 				TimeoutWriteClient:     dc.TimeoutWriteClient,
 			},
+			Protocol: &dc.Protocol,
 		},
 
 		StickySessions: &icluster_conf.ClusterStickySessions{
@@ -329,6 +330,8 @@ func newDaoClusterParam(param *icluster_conf.ClusterParam) *dao.TClusterParam {
 			dc.MaxIdleConnPerHost = conn.MaxIdleConnPerRs
 			dc.CancelOnClientClose = conn.CancelOnClientClose
 		}
+
+		dc.Protocol = basic.Protocol
 
 		if retries := basic.Retries; retries != nil {
 			dc.MaxRetryInCluster = retries.MaxRetryInSubcluster
