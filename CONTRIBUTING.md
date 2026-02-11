@@ -1,13 +1,13 @@
 # Contribute Code
 
-You are welcome to contribute to project BFE. To contribute to BFE, you have to agree with the 
+You are welcome to contribute to project ai-gateway. To contribute to ai-gateway, you have to agree with the 
 [Contributor License Agreement](https://cla-assistant.io/yf-networks/ai-gateway-api).
 
 We sincerely appreciate your contribution. This document explains our workflow and work style.
 
 ## Workflow
 
-BFE uses this [Git branching model](http://nvie.com/posts/a-successful-git-branching-model/). The following steps guide usual contributions.
+ai-gateway uses this [Git branching model](http://nvie.com/posts/a-successful-git-branching-model/). The following steps guide usual contributions.
 
 1. Fork
 
@@ -19,7 +19,7 @@ BFE uses this [Git branching model](http://nvie.com/posts/a-successful-git-branc
 
    ```bash
    git clone https://github.com/your-github-account/ai-gateway-api
-   cd bfe
+   cd ai-gateway
    ```
 
 1. Create the local feature branch
