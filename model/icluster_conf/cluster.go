@@ -711,6 +711,9 @@ func convertToBFEModelMapping(modelMappings []*Mapping) *map[string]string {
 		responseMap[*modelMapping.Key] = *modelMapping.Value
 	}
 
+	if len(responseMap) == 0 {
+		return nil
+	}
 	return &responseMap
 }
 
