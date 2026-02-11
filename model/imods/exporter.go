@@ -40,15 +40,15 @@ type ModAPIKeyRuleConf struct {
 
 // ExportContent defines the structure for API key information exported to BFE
 type ExportContent struct {
-	Key            string `json:"key"`             // API key value
-	Status         int    `json:"status"`          // Key status (enabled/disabled/expired/exhausted)
-	Name           string `json:"name"`            // API key name
-	UpdatedTime    int64  `json:"update_time"`     // Last update timestamp
-	ExpiredTime    int64  `json:"expired_time"`    // Expiration timestamp
-	UnlimitedQuota bool   `json:"unlimited_quota"` // Whether quota is unlimited
-	RemainQuota    int64  `json:"remain_quota"`    // Remaining quota
-	Models         string `json:"models"`          // Allowed models (comma-separated)
-	Subnet         string `json:"subnet"`          // Allowed subnets (comma-separated)
+	Key            string `json:"key"`              // API key value
+	Status         int    `json:"status"`           // Key status (enabled/disabled/expired/exhausted)
+	Name           string `json:"name"`             // API key name
+	UpdatedTime    int64  `json:"update_time"`      // Last update timestamp
+	ExpiredTime    int64  `json:"expired_time"`     // Expiration timestamp
+	UnlimitedQuota bool   `json:"unlimited_quota"`  // Whether quota is unlimited
+	RemainQuota    int64  `json:"remain_quota"`     // Remaining quota
+	Models         string `json:"models,omitempty"` // Allowed models (comma-separated)
+	Subnet         string `json:"subnet,omitempty"` // Allowed subnets (comma-separated)
 }
 
 // ExportAPIKeyRule defines the structure for API key routing rules exported to BFE
