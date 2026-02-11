@@ -176,8 +176,8 @@ func buildModelCondition(currentCond string, modelFilter *ModelFilter) string {
 	}
 
 	modelCond := fmt.Sprintf("req_body_json_in(\"%s\", \"%s\", %t)",
+	    *modelFilter.Pattern,
 		*modelFilter.Name,
-		*modelFilter.Pattern,
 		*modelFilter.IgnoreCase)
 	return combineConditions(currentCond, modelCond)
 }
