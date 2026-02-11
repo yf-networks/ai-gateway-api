@@ -59,6 +59,7 @@ CREATE TABLE `clusters` (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT "no desc",
   `product_id` bigint(20) NOT NULL,
+  `protocol` varchar(255) NOT NULL DEFAULT 'http' COMMENT 'http or https',
   `max_idle_conn_per_host` smallint(6) NOT NULL DEFAULT '2',
   `timeout_conn_serv` int(11) NOT NULL DEFAULT '50000',
   `timeout_response_header` int(11) NOT NULL DEFAULT '50000',
