@@ -246,7 +246,11 @@ func (rm *RouteRuleManager) ClusterDeleteChecker(ctx context.Context, product *i
 		return nil
 	}
 
-	return xerror.WrapModelErrorWithMsg("Default rule Refer To This Cluster")
+	one := defaultRules[0]
+	if one.RouteAction != nil && one.RouteAction.Forward != nil && one.RouteAction.Forward.ClusterName == cluster.Name {
+		return xerror.WrapModelErrorWithMsg("Default rule Refer To This Cluster")
+	}
+	return nil
 }
 
 func (rm *RouteRuleManager) FetchProductRule(ctx context.Context, product *ibasic.Product) (prr *ProductRouteRule, err error) {
