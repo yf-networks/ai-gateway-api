@@ -124,7 +124,7 @@ func GetRemainingQuota(param *APIKeyParam) (*int64, error) {
 		if *param.Limit > used {
 			return lib.PInt64(*param.Limit - used), nil
 		}
-		return lib.PInt64(0), nil
+		return nil, nil
 	}
 
 	// No limit set

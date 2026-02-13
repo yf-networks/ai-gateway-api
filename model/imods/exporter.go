@@ -203,16 +203,12 @@ func (rlm *APIKeyRuleManager) APIKeyRuleGenerator(ctx context.Context) (*iversio
 			}
 
 			if remainingQuota != nil {
-				if *remainingQuota == 0 {
-					status = mod_ai_token_auth.TokenStatusExhausted
-				} else {
-					// Check if key has expired
-					if expiredTime != int64(UnlimitedQuota) && time.Now().Local().Unix() >= expiredTime {
-						status = mod_ai_token_auth.TokenStatusExpired
-					}
+				// Check if key has expired
+				if expiredTime != int64(UnlimitedQuota) && time.Now().Local().Unix() >= expiredTime {
+					status = mod_ai_token_auth.TokenStatusExpired
 				}
 			} else {
-				status = mod_ai_token_auth.TokenStatusDisabled
+				status = mod_ai_token_auth.TokenStatusExhausted
 			}
 		}
 
