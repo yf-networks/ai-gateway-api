@@ -1,0 +1,85 @@
+{
+  "providers": {
+    "openai": {
+      "list_path": "data",
+      "id_field": "id",
+      "name_field": "name",
+      "created_field": "created",
+      "owner_field": "owned_by",
+      "type": "array",
+      "description": "OpenAI API格式"
+    },
+    "anthropic": {
+      "list_path": "models",
+      "id_field": "model_id",
+      "name_field": "display_name",
+      "created_field": "created_at",
+      "type": "array",
+      "description": "Anthropic Claude API格式"
+    },
+    "google": {
+      "list_path": "models",
+      "id_field": "name",
+      "name_field": "displayName",
+      "created_field": "createTime",
+      "type": "array",
+      "description": "Google Gemini API格式"
+    },
+    "deepseek": {
+      "list_path": "data",
+      "id_field": "id",
+      "name_field": "name",
+      "created_field": "created",
+      "owner_field": "owned_by",
+      "type": "array",
+      "description": "DeepSeek API格式（与OpenAI兼容）",
+      "custom_fields": {
+        "context_length": "context_length",
+        "description": "description"
+      }
+    },
+    "qwen": {
+      "list_path": "output.models",
+      "id_field": "model",
+      "name_field": "name",
+      "description_field": "description",
+      "type": "array",
+      "description": "通义千问API格式（阿里云DashScope）",
+      "custom_fields": {
+        "model_type": "model_type",
+        "support_vision": "capabilities.vision",
+        "support_search": "capabilities.search",
+        "support_function_call": "capabilities.function_call"
+      }
+    },
+    "qwen_legacy": {
+      "list_path": "models",
+      "id_field": "model_id",
+      "name_field": "model_name",
+      "description_field": "description",
+      "type": "array",
+      "description": "通义千问旧版API格式",
+      "custom_fields": {
+        "status": "status",
+        "max_tokens": "config.max_tokens"
+      }
+    },
+    "custom_api": {
+      "list_path": "result.items",
+      "id_field": "model_id",
+      "name_field": "model_name",
+      "type": "array",
+      "custom_fields": {
+        "context_length": "config.context_len",
+        "max_tokens": "config.max_tokens"
+      }
+    }
+  },
+  "default_parser": {
+    "list_path": "",
+    "id_field": "id",
+    "name_field": "name",
+    "type": "auto_detect",
+    "description": "默认解析器，尝试自动探测"
+  }
+}
