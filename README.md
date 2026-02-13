@@ -9,7 +9,7 @@ AI Gateway API is the **control-plane core component** of AI Gateway. It provide
 
 ## Architecture Overview
 
-![Architecture](/docs/zh_cn/assert/deploy_architecture.png)
+![Architecture](/docs/zh_cn/assert/deploy_architecture_ai.png)
 
 AI Gateway consists of the following core components:
 
