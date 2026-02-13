@@ -194,21 +194,22 @@ func (rlm *APIKeyRuleManager) APIKeyRuleGenerator(ctx context.Context) (*iversio
 		if one.Enable != nil && *one.Enable {
 			if *one.IsLimit {
 				limit = *one.Limit
-			}
+				status = mod_ai_token_auth.TokenStatusEnabled
+				remainingQuota, err := icluster_conf.GetRemainingQuota(one)
+				if err != nil {
+					return nil, err
+				}
 
-			status = mod_ai_token_auth.TokenStatusEnabled
-			remainingQuota, err := icluster_conf.GetRemainingQuota(one)
-			if err != nil {
-				return nil, err
-			}
-
-			if remainingQuota != nil {
-				// Check if key has expired
-				if expiredTime != int64(UnlimitedQuota) && time.Now().Local().Unix() >= expiredTime {
-					status = mod_ai_token_auth.TokenStatusExpired
+				if remainingQuota != nil {
+					// Check if key has expired
+					if expiredTime != int64(UnlimitedQuota) && time.Now().Local().Unix() >= expiredTime {
+						status = mod_ai_token_auth.TokenStatusExpired
+					}
+				} else {
+					status = mod_ai_token_auth.TokenStatusExhausted
 				}
 			} else {
-				status = mod_ai_token_auth.TokenStatusExhausted
+				status = mod_ai_token_auth.TokenStatusEnabled
 			}
 		}
 
