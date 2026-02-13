@@ -9,7 +9,7 @@ AI Gateway API 是 AI Gateway 的**控制面核心组件**，负责策略/配置
 
 ## 架构概述
 
-![架构](/docs/zh_cn/assert/deploy_architecture.png)
+![架构](/docs/zh_cn/assert/deploy_architecture_ai.png)
 
 AI Gateway 包含如下核心组件：
 
